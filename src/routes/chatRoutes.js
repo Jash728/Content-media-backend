@@ -12,19 +12,42 @@ router.post("/generate", async (req, res) => {
   }
 
   try {
-    // Simulate a response based on the prompt and model
-    const response = `This is a simulated response for the prompt: "${prompt}" using model: ${model}`;
+    // Make an API request to the AI model to get a response based on the prompt
+    // Replace with the actual AI API you're using (e.g., Ollama, OpenAI, etc.)
+    const aiResponse = await fetch("http://localhost:11434/api/generate", {
+      // Replace with actual API URL
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt }), // Send the prompt to the AI model
+    });
 
+    const aiData = await aiResponse.json();
+
+    if (!aiResponse.ok) {
+      return res
+        .status(aiResponse.status)
+        .json({ message: "Error from AI model", error: aiData });
+    }
+
+    // Extract the response from the AI model (adjust according to actual API response structure)
+    const responseText = aiData.response; // Modify according to the API's response structure
+
+    // Save the chat to the database with the prompt and AI-generated response
     const newChat = new Chat({
       chatId: uuidv4(),
       prompt,
-      response,
+      response: responseText,
     });
 
     await newChat.save();
-    res.status(201).json(newChat);
+
+    res.status(201).json(newChat); // Return the saved chat data
   } catch (err) {
-    res.status(500).json({ message: "Error saving chat", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Error generating response", error: err.message });
   }
 });
 
