@@ -5,17 +5,18 @@ const { v4: uuidv4 } = require("uuid");
 const router = express.Router();
 
 router.post("/generate", async (req, res) => {
-  const { prompt, response } = req.body;
+  const { model, prompt } = req.body;
 
-  if (!prompt || !response) {
-    return res
-      .status(400)
-      .json({ message: "Prompt and response are required." });
+  if (!prompt || !model) {
+    return res.status(400).json({ message: "Model and prompt are required." });
   }
 
   try {
+    // Simulate a response based on the prompt and model
+    const response = `This is a simulated response for the prompt: "${prompt}" using model: ${model}`;
+
     const newChat = new Chat({
-      chatId: uuidv4(), // Generate a unique chat ID
+      chatId: uuidv4(),
       prompt,
       response,
     });
