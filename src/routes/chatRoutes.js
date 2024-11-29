@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
 
   try {
     const newChat = new Chat({
-      chatId: uuidv4(), // Generate a unique chat ID
+      chatId: uuidv4(), 
       prompt,
       response,
     });
