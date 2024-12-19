@@ -1,6 +1,10 @@
-const express = require("express");
-const Chat = require("../models/chat");
-const { v4: uuidv4 } = require("uuid");
+import express from "express";
+import Chat from "../models/chat.js";
+import { v4 as uuidv4 } from "uuid";
+
+
+const uniqueId = uuidv4();
+
 
 const router = express.Router();
 
@@ -38,4 +42,4 @@ router.get("/", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
